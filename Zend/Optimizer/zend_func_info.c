@@ -17,6 +17,7 @@
    +----------------------------------------------------------------------+
 */
 
+#include "zend_API.h"
 #include "zend_compile.h"
 #include "zend_extensions.h"
 #include "zend_ssa.h"
@@ -101,12 +102,14 @@ ZEND_API int zend_func_info_rid = -1;
 uint32_t zend_get_internal_func_info(
 		const zend_function *callee_func, const zend_call_info *call_info, const zend_ssa *ssa) {
 	if (callee_func->common.scope) {
-		/* This is a method, not a function. */
-		return 0;
+		if (!(callee_func->common.scope->ce_flags & ZEND_ACC_FINAL) || !(callee_func->common.fn_flags & ZEND_ACC_FINAL)) {
+			/* This is a non-final method. */
+			return 0;
+		}
 	}
 
-	zend_string *name = callee_func->common.function_name;
-	if (!name) {
+	zend_string *name = get_function_or_method_name(callee_func);
+	if (zend_string_equals_literal_ci(name, "main")) {
 		/* zend_pass_function has no name. */
 		return 0;
 	}

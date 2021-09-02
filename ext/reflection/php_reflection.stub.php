@@ -719,6 +719,7 @@ class ReflectionEnum extends ReflectionClass
 
     public function getCase(string $name): ReflectionEnumUnitCase {}
 
+    /** @return array<int|string, ReflectionClassConstant> */
     public function getCases(): array {}
 
     public function isBacked(): bool {}

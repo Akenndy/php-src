@@ -251,6 +251,10 @@ class SimpleType {
         $this->isBuiltin = $isBuiltin;
     }
 
+    public function isMixed(): bool {
+        return $this->isBuiltin && $this->name === "mixed";
+    }
+
     public function isScalar(): bool {
         return $this->isBuiltin && in_array($this->name, ["null", "false", "true", "bool", "int", "float"], true);
     }
@@ -389,7 +393,7 @@ class SimpleType {
             case "iterable":
                 return "MAY_BE_ARRAY|MAY_BE_ARRAY_KEY_ANY|MAY_BE_ARRAY_OF_ANY|MAY_BE_OBJECT";
             case "mixed":
-                return "MAY_BE_ANY|MAY_BE_ARRAY_KEY_ANY|MAY_BE_ARRAY_OF_ANY";
+                return "MAY_BE_ANY|MAY_BE_ARRAY_KEY_ANY|MAY_BE_ARRAY_OF_ANY|MAY_BE_ARRAY_OF_REF";
         }
 
         return $this->toTypeMask();
@@ -471,6 +475,16 @@ class Type {
      */
     private function __construct(array $types) {
         $this->types = $types;
+    }
+
+    public function isMixed(): bool {
+        foreach ($this->types as $type) {
+            if ($type->isMixed()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function isScalar(): bool {
@@ -1163,7 +1177,7 @@ class FuncInfo {
     }
 
     public function getOptimizerInfo(): ?string {
-        if ($this->isMethod()) {
+        if ($this->isMethod() && !$this->isFinalMethod()) {
             return null;
         }
 
@@ -1177,6 +1191,10 @@ class FuncInfo {
 
         $type = $this->return->phpDocType ?? $this->return->type;
         if ($type === null) {
+            return null;
+        }
+
+        if ($type->isMixed()) {
             return null;
         }
 

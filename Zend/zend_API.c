@@ -4865,3 +4865,12 @@ ZEND_API zend_result zend_get_default_from_internal_arg_info(
 #endif
 	return get_default_via_ast(default_value_zval, default_value);
 }
+
+ZEND_API zend_string *get_function_or_method_name(const zend_function *func)
+{
+	if (func->common.scope) {
+		return zend_create_member_string(func->common.scope->name, func->common.function_name);
+	}
+
+	return func->common.function_name ? zend_string_copy(func->common.function_name) : zend_string_init("main", sizeof("main") - 1, 0);
+}

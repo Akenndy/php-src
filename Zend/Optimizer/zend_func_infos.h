@@ -409,6 +409,7 @@ static const func_info_t func_infos[] = {
 #if defined(HAVE_HISTORY_LIST)
     F1("readline_list_history", MAY_BE_ARRAY|MAY_BE_ARRAY_KEY_LONG|MAY_BE_ARRAY_OF_STRING),
 #endif
+    FN("ReflectionEnum::getCases", MAY_BE_ARRAY|MAY_BE_ARRAY_KEY_LONG|MAY_BE_ARRAY_KEY_STRING|MAY_BE_ARRAY_OF_OBJECT),
     F1("session_name", MAY_BE_STRING|MAY_BE_FALSE),
     F1("session_module_name", MAY_BE_STRING|MAY_BE_FALSE),
     F1("session_save_path", MAY_BE_STRING|MAY_BE_FALSE),
