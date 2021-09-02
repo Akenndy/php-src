@@ -101,20 +101,20 @@ ZEND_API int zend_func_info_rid = -1;
 
 uint32_t zend_get_internal_func_info(
 		const zend_function *callee_func, const zend_call_info *call_info, const zend_ssa *ssa) {
-	if (callee_func->common.scope) {
-		if (!(callee_func->common.scope->ce_flags & ZEND_ACC_FINAL) || !(callee_func->common.fn_flags & ZEND_ACC_FINAL)) {
-			/* This is a non-final method. */
-			return 0;
-		}
+	if (callee_func->common.scope && !call_info->is_prototype) {
+		/* This is a non-prototype method. */
+		return 0;
 	}
 
 	zend_string *name = get_function_or_method_name(callee_func);
 	if (zend_string_equals_literal_ci(name, "main")) {
+		zend_string_release(name);
 		/* zend_pass_function has no name. */
 		return 0;
 	}
 
 	zval *zv = zend_hash_find_known_hash(&func_info, name);
+	zend_string_release(name);
 	if (!zv) {
 		return 0;
 	}
