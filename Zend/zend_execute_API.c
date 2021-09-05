@@ -539,6 +539,13 @@ ZEND_API zend_string *get_active_function_or_method_name(void) /* {{{ */
 }
 /* }}} */
 
+ZEND_API zend_string *get_function_or_method_name(const zend_function *func)
+{
+	zend_string *name = get_function_or_method_name_or_null(func);
+
+	return name ? name : zend_string_init("main", sizeof("main") - 1, 0);
+}
+
 ZEND_API const char *get_active_function_arg_name(uint32_t arg_num) /* {{{ */
 {
 	zend_function *func;

@@ -689,9 +689,9 @@ ZEND_API void zend_detach_symbol_table(zend_execute_data *execute_data);
 ZEND_API zend_result zend_set_local_var(zend_string *name, zval *value, bool force);
 ZEND_API zend_result zend_set_local_var_str(const char *name, size_t len, zval *value, bool force);
 
-ZEND_API zend_string *get_function_or_method_name(const zend_function *func);
+ZEND_API zend_string *get_function_or_method_name_or_null(const zend_function *func);
 
-static zend_always_inline zend_result zend_forbid_dynamic_call(void)
+static zend_always_inline zend_result zend_forbid_dynamic_call(const char *func_name)
 {
 	zend_execute_data *ex = EG(current_execute_data);
 	ZEND_ASSERT(ex != NULL && ex->func != NULL);

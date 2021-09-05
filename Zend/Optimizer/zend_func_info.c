@@ -106,8 +106,8 @@ uint32_t zend_get_internal_func_info(
 		return 0;
 	}
 
-	zend_string *name = get_function_or_method_name(callee_func);
-	if (zend_string_equals_literal_ci(name, "main")) {
+	zend_string *name = get_function_or_method_name_or_null(callee_func);
+	if (name == NULL) {
 		zend_string_release(name);
 		/* zend_pass_function has no name. */
 		return 0;
