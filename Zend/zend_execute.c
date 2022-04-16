@@ -2716,7 +2716,7 @@ try_string_offset:
 			ZVAL_UNDEFINED_OP2();
 		}
 		if (!is_list && type != BP_VAR_IS) {
-			zend_error(E_WARNING, "Trying to access array offset on value of type %s",
+			zend_error(E_WARNING, "Trying to access array offset on %s",
 				zend_zval_type_name(container));
 		}
 		ZVAL_NULL(result);

@@ -2342,7 +2342,7 @@ static void ZEND_FASTCALL zend_jit_only_vars_by_reference(zval *arg)
 
 static void ZEND_FASTCALL zend_jit_invalid_array_access(zval *container)
 {
-	zend_error(E_WARNING, "Trying to access array offset on value of type %s", zend_zval_type_name(container));
+	zend_error(E_WARNING, "Trying to access array offset on %s", zend_zval_type_name(container));
 }
 
 static void ZEND_FASTCALL zend_jit_invalid_property_read(zval *container, const char *property_name)
