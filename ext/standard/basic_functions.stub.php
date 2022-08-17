@@ -128,6 +128,7 @@ const ARRAY_FILTER_USE_KEY = UNKNOWN;
  */
 const M_E = 2.718281828459045;
 
+#[AllowDynamicProperties]
 final class __PHP_Incomplete_Class
 {
 }
